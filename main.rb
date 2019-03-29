@@ -1,4 +1,4 @@
- class University
+class University
   attr_accessor :name, :students
 
   def initialize(name)
@@ -11,9 +11,14 @@
     student
   end
 
-  def get_smart_students
-    average = @students.map(&:point).sum / @students.size.to_f
-    @students.select { |student| student.point > average }
+  def selection 
+  	if @students.size != 0
+  	 sum = 0
+  	 points = @students.map(&:point)
+  	 points.each { |d| sum += d }
+  	 average = sum / @students.size.to_f
+  	 @students.select { |student| student.point >= average }
+  	end  
   end
 end
 
@@ -24,7 +29,9 @@ class Student
     @name = name
     @point = point
   end
+
 end
+
 
 class InternShip
   attr_accessor :name, :students
@@ -34,23 +41,29 @@ class InternShip
     @students = []
   end
 
+  def get_smart_students(fromUniversity)
+  	@students = fromUniversity
+	end
+
   def print
+  	if @students!= nil
     @students.each do |student|
       pp "Name: #{student.name}. Point: #{student.point}"
-    end
+    	end
+    else 
+  	 p "Zero smart students"
+  	end
   end
 end
 
 
 class Application
   university = University.new("LNU")
-
-  university.addStudent(Student.new("Volodymyr Stetsyshyn", 3))
-  university.addStudent(Student.new("Vasya Naguliak", 4))
   university.addStudent(Student.new("Nazar Chaban", 5))
-  university.addStudent(Student.new("Luibomyr Xanas", 100))
-
-  intership = InternShip.new("Test")
-  intership.students = university.get_smart_students
-  intership.print
+  university.addStudent(Student.new("Luibomyr Xanas", 2))
+  
+  internship = InternShip.new("InterLink")
+ 
+  internship.get_smart_students(university.selection)
+  internship.print
 end
