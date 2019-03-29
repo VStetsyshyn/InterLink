@@ -13,10 +13,8 @@ class University
 
   def selection 
   	if @students.size != 0
-  	 sum = 0
   	 points = @students.map(&:point)
-  	 points.each { |d| sum += d }
-  	 average = sum / @students.size.to_f
+  	 average = points.inject { |sum, n| sum + n } / @students.size.to_f
   	 @students.select { |student| student.point >= average }
   	end  
   end
